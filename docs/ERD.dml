@@ -1,0 +1,44 @@
+// Employee Management System ERD
+
+Table users {
+  id integer [primary key]
+  name varchar
+  email varchar [unique]
+  password varchar
+  role varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table employee_profiles {
+  id integer [primary key]
+  user_id integer [not null]
+  full_name varchar
+  email varchar
+  phone varchar
+  dob date
+  gender varchar
+  address_line_1 varchar
+  address_line_2 varchar
+  city varchar
+  state varchar
+  pincode varchar
+  country varchar
+  profile_photo varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table employee_educations {
+  id integer [primary key]
+  employee_profile_id integer [not null]
+  certificate_name varchar
+  institute_name varchar
+  year_of_completion integer
+  document_file varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Ref: employee_profiles.user_id > users.id
+Ref: employee_educations.employee_profile_id > employee_profiles.id
