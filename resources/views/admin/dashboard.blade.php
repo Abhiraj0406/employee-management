@@ -13,6 +13,11 @@
                     Here admin will manage and view all employee profiles.
                 </p>
 
+                <a href="{{ route('profile.edit') }}"
+                    class="inline-block mt-3 bg-blue-600 text-white px-4 py-2 rounded">
+                        My Account Profile
+                </a>
+
                 <a href="{{ route('admin.employees.index') }}"
                     class="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded">
                         View All Employees
