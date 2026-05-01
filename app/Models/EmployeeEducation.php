@@ -5,6 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class EmployeeEducation extends Model
 {
+    protected $table = 'employee_educations';
+
     protected $fillable = [
         'employee_profile_id',
         'certificate_name',

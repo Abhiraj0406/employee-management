@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Employee\EmployeeProfileController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,8 +13,6 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 | Dashboard Redirect
 |--------------------------------------------------------------------------
-| Breeze sends logged-in users to /dashboard.
-| We redirect them based on their role.
 */
 Route::get('/dashboard', function () {
     if (auth()->user()->role === 'admin') {
@@ -26,8 +26,6 @@ Route::get('/dashboard', function () {
 |--------------------------------------------------------------------------
 | Breeze Account Profile Routes
 |--------------------------------------------------------------------------
-| This is only for login account settings.
-| This is not the employee assignment profile.
 */
 Route::middleware('auth')->group(function () {
     Route::get('/account/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -39,7 +37,6 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 | Admin Routes
 |--------------------------------------------------------------------------
-| Only admin users can access routes inside this group.
 */
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
@@ -48,13 +45,18 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/dashboard', function () {
             return view('admin.dashboard');
         })->name('dashboard');
+
+        Route::get('/employees', [EmployeeController::class, 'index'])
+            ->name('employees.index');
+
+        Route::get('/employees/{employeeProfile}', [EmployeeController::class, 'show'])
+            ->name('employees.show');
     });
 
 /*
 |--------------------------------------------------------------------------
 | Employee Routes
 |--------------------------------------------------------------------------
-| Only employee users can access routes inside this group.
 */
 Route::middleware(['auth', 'role:employee'])
     ->prefix('employee')
@@ -63,6 +65,21 @@ Route::middleware(['auth', 'role:employee'])
         Route::get('/dashboard', function () {
             return view('employee.dashboard');
         })->name('dashboard');
+
+        Route::get('/profile', [EmployeeProfileController::class, 'show'])
+            ->name('profile.show');
+
+        Route::get('/profile/create', [EmployeeProfileController::class, 'create'])
+            ->name('profile.create');
+
+        Route::post('/profile', [EmployeeProfileController::class, 'store'])
+            ->name('profile.store');
+
+        Route::get('/profile/edit', [EmployeeProfileController::class, 'edit'])
+            ->name('profile.edit');
+
+        Route::put('/profile', [EmployeeProfileController::class, 'update'])
+            ->name('profile.update');
     });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
